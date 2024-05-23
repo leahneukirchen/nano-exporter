@@ -26,6 +26,7 @@ COLLECTORS += netdev
 COLLECTORS += loadavg
 COLLECTORS += stat
 COLLECTORS += textfile
+COLLECTORS += timex
 COLLECTORS += uname
 
 # compile settings

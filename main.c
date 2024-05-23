@@ -41,6 +41,7 @@
   X(netdev) \
   X(stat) \
   X(textfile) \
+  X(timex) \
   X(uname) \
 
 #endif
