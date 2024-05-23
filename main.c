@@ -30,6 +30,7 @@
 
 #ifndef XCOLLECTORS
 #define XCOLLECTORS \
+  X(conntrack) \
   X(cpu) \
   X(diskstats) \
   X(filefd) \

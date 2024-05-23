@@ -15,6 +15,7 @@
 # enabled collectors
 
 COLLECTORS =
+COLLECTORS += conntrack
 COLLECTORS += cpu
 COLLECTORS += diskstats
 COLLECTORS += filesystem
