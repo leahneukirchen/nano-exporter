@@ -18,6 +18,7 @@ COLLECTORS =
 COLLECTORS += cpu
 COLLECTORS += diskstats
 COLLECTORS += filesystem
+COLLECTORS += filefd
 COLLECTORS += hwmon
 COLLECTORS += meminfo
 COLLECTORS += netdev

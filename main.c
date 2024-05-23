@@ -32,6 +32,7 @@
 #define XCOLLECTORS \
   X(cpu) \
   X(diskstats) \
+  X(filefd) \
   X(filesystem) \
   X(hwmon) \
   X(loadavg) \
