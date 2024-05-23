@@ -21,6 +21,7 @@ COLLECTORS += diskstats
 COLLECTORS += filesystem
 COLLECTORS += filefd
 COLLECTORS += hwmon
+COLLECTORS += mdstat
 COLLECTORS += meminfo
 COLLECTORS += netdev
 COLLECTORS += loadavg

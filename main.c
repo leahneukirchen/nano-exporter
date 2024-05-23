@@ -37,6 +37,7 @@
   X(filesystem) \
   X(hwmon) \
   X(loadavg) \
+  X(mdstat) \
   X(meminfo) \
   X(netdev) \
   X(stat) \
