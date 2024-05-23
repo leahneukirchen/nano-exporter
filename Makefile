@@ -28,6 +28,7 @@ COLLECTORS += stat
 COLLECTORS += textfile
 COLLECTORS += timex
 COLLECTORS += uname
+COLLECTORS += vmstat
 
 # compile settings
 

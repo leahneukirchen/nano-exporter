@@ -43,6 +43,7 @@
   X(textfile) \
   X(timex) \
   X(uname) \
+  X(vmstat) \
 
 #endif
 
