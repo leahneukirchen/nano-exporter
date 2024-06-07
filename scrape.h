@@ -43,6 +43,9 @@ void scrape_serve(scrape_server *server, unsigned ncoll, const struct collector 
 /** Closes the scrape server sockets and frees any resources. */
 void scrape_close(scrape_server *server);
 
+/** Run all scrapers once and print to stdout. */
+void scrape_print(unsigned ncoll, const struct collector *coll[], void *coll_ctx[]);
+
 /** Container for label keys and values. */
 struct label {
   char *key;

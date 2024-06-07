@@ -218,6 +218,25 @@ void scrape_close(scrape_server *srv) {
   free(srv);
 }
 
+void scrape_print(unsigned ncoll, const struct collector *coll[], void *coll_ctx[]) {
+  bbuf *buf = bbuf_alloc(BUF_INITIAL, BUF_MAX);
+  for (unsigned i = 0; i < ncoll; i++) {
+    bbuf_reset(buf);
+
+    struct scrape_req req = {
+      .state = req_state_write_metrics,
+      .buf = buf,
+    };
+    coll[i]->collect(&req, coll_ctx[i]);
+
+    size_t len;
+    char *data = bbuf_get(buf, &len);
+    write_all(1, data, len);
+  }
+
+  bbuf_free(buf);
+}
+
 // scrape write API implementation
 
 void scrape_write(scrape_req *req, const char *metric, const struct label *labels, double value) {
