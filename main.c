@@ -63,14 +63,10 @@ static const struct collector *collectors[] = {
 
 struct config {
   const char *port;
-  bool daemonize;
-  const char *pidfile;
 };
 
 const struct config default_config = {
   .port = "9100",
-  .daemonize = true,
-  .pidfile = 0,
 };
 
 struct collector_ctx {
@@ -80,7 +76,6 @@ struct collector_ctx {
 };
 
 static bool initialize(int argc, char *argv[], struct config *cfg, struct collector_ctx *ctx);
-static bool daemonize(struct config *cfg);
 
 int main(int argc, char *argv[]) {
   struct config cfg = default_config;
@@ -92,10 +87,6 @@ int main(int argc, char *argv[]) {
   scrape_server *server = scrape_listen(cfg.port);
   if (!server)
     return 1;
-
-  if (cfg.daemonize)
-    if (!daemonize(&cfg))
-      return 1;
 
   scrape_serve(server, ctx.enabled, ctx.coll, ctx.coll_ctx);
   scrape_close(server);
@@ -150,12 +141,6 @@ static bool initialize(int argc, char *argv[], struct config *cfg, struct collec
     if (strncmp(argv[arg], "--port=", 7) == 0) {
       cfg->port = &argv[arg][7];
       goto next_arg;
-    } else if (strcmp(argv[arg], "--foreground") == 0) {
-      cfg->daemonize = false;
-      goto next_arg;
-    } else if (strncmp(argv[arg], "--pidfile=", 10) == 0) {
-      cfg->pidfile = &argv[arg][10];
-      goto next_arg;
     }
 
     fprintf(stderr, "unknown argument: %s\n", argv[arg]);
@@ -200,59 +185,6 @@ static bool initialize(int argc, char *argv[], struct config *cfg, struct collec
       }
     } else {
       ctx->coll_ctx[c] = 0;
-    }
-  }
-
-  return true;
-}
-
-static bool daemonize(struct config *cfg) {
-  pid_t pid;
-
-  pid = fork();
-  if (pid == -1) {
-    perror("fork");
-    return false;
-  }
-
-  if (pid > 0) {
-    // in the parent, verify the intermediate process exits successfully
-    int status;
-    if (waitpid(pid, &status, 0) == -1) {
-      perror("waitpid(daemon)");
-      exit(1);
-    }
-    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
-      fprintf(stderr, "daemonized process exited unexpectedly: %x\n", status);
-      exit(1);
-    }
-    exit(0);
-  }
-
-  // in the intermediate process, prepare for daemon life and fork again
-
-  if (setsid() == -1) {
-    perror("setsid");
-    exit(1);
-  }
-
-  close(0);
-  close(1);
-  close(2);
-
-  pid = fork();
-  if (pid == -1)
-    exit(2);
-  else if (pid > 0)
-    exit(0);  // lets the parent know all is well
-
-  // attempt to record the grandchild PID, if asked to
-
-  if (cfg->pidfile) {
-    FILE *f = fopen(cfg->pidfile, "w");
-    if (f) {
-      fprintf(f, "%ld\n", (long) getpid());
-      fclose(f);
     }
   }
 
