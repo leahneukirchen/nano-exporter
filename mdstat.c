@@ -19,24 +19,6 @@ const struct collector mdstat_collector = {
   .collect = mdstat_collect,
 };
 
-static ssize_t
-read_file_at(int dirfd, char *pathname, char *buf, size_t bufsiz) {
-  int fd = openat(dirfd, pathname, O_RDONLY);
-  if (fd < 0)
-    return -1;
-
-  ssize_t r = read(fd, buf, bufsiz - 1);
-  close(fd);
-  if (r < 0)
-    return -1;
-
-  if (buf[r-1] == '\n')
-    r--;
-
-  buf[r] = 0;
-  return r;
-}
-
 void
 scrape_write_md_label(scrape_req *req, char *name, char *md, char *label, char *value, double d) {
   struct label labels[] = {

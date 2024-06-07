@@ -20,6 +20,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <unistd.h>
 
 // character buffers
 
@@ -119,6 +120,8 @@ char *fgets_line(char *s, int size, FILE *stream);
  * if any of the `write` calls failed with an error.
  */
 int write_all(int fd, const void *buf, size_t len);
+
+ssize_t read_file_at(int dirfd, char *pathname, char *buf, size_t bufsiz);
 
 #ifndef PATH
 /** Macro for constructing absolute paths in release, relative paths in tests. */

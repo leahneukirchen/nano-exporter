@@ -16,6 +16,7 @@
 
 #define _POSIX_C_SOURCE 200809L
 
+#include <fcntl.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -245,4 +246,22 @@ int write_all(int fd, const void *buf_ptr, size_t len) {
   }
 
   return 0;
+}
+
+ssize_t
+read_file_at(int dirfd, char *pathname, char *buf, size_t bufsiz) {
+  int fd = openat(dirfd, pathname, O_RDONLY);
+  if (fd < 0)
+    return -1;
+
+  ssize_t r = read(fd, buf, bufsiz - 1);
+  close(fd);
+  if (r < 0)
+    return -1;
+
+  if (buf[r-1] == '\n')
+    r--;
+
+  buf[r] = 0;
+  return r;
 }
