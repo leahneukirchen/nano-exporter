@@ -27,6 +27,7 @@ COLLECTORS += netdev
 COLLECTORS += loadavg
 COLLECTORS += pressure
 COLLECTORS += rapl
+COLLECTORS += schedstat
 COLLECTORS += stat
 COLLECTORS += textfile
 COLLECTORS += timex

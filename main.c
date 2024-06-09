@@ -42,6 +42,7 @@
   X(netdev) \
   X(pressure) \
   X(rapl) \
+  X(schedstat) \
   X(stat) \
   X(textfile) \
   X(timex) \
