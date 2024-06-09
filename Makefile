@@ -24,6 +24,7 @@ COLLECTORS += hwmon
 COLLECTORS += mdstat
 COLLECTORS += meminfo
 COLLECTORS += netdev
+COLLECTORS += netif
 COLLECTORS += loadavg
 COLLECTORS += pressure
 COLLECTORS += rapl
