@@ -36,8 +36,7 @@ COLLECTORS += vmstat
 
 # compile settings
 
-CFLAGS = -std=c11 -Wall -Wextra -pedantic -Wno-format-truncation $(if $(DEBUG),-g,-Os)
-LDFLAGS = $(if $(DEBUG),-g,-Os -s)
+CFLAGS = -std=c11 -Wall -Wextra -pedantic -Wno-format-truncation -g -O2
 
 # build rules
 
