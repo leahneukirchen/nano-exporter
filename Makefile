@@ -25,6 +25,7 @@ COLLECTORS += mdstat
 COLLECTORS += meminfo
 COLLECTORS += netdev
 COLLECTORS += loadavg
+COLLECTORS += pressure
 COLLECTORS += rapl
 COLLECTORS += stat
 COLLECTORS += textfile

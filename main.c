@@ -40,6 +40,7 @@
   X(mdstat) \
   X(meminfo) \
   X(netdev) \
+  X(pressure) \
   X(rapl) \
   X(stat) \
   X(textfile) \
