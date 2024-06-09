@@ -33,16 +33,22 @@ static void netif_collect_dir(scrape_req *req, char *dir) {
     LABEL_END,
   };
 
-  if (read_file_at(dirfd, "carrier", buf, sizeof buf) > 0)
+  if (read_file_at(dirfd, "carrier", buf, sizeof buf) > 0) {
     scrape_write(req, "node_network_carrier", dev_label, atof(buf));
 
-  if (read_file_at(dirfd, "carrier_changes", buf, sizeof buf) > 0)
-    scrape_write(req, "node_network_carrier_changes_total", dev_label, atof(buf));
+    if (read_file_at(dirfd, "carrier_changes", buf, sizeof buf) > 0)
+      scrape_write(req, "node_network_carrier_changes_total", dev_label, atof(buf));
+  }
 
-  if (read_file_at(dirfd, "speed", buf, sizeof buf) > 0)
-    if (atof(buf) > 0)
+  if (read_file_at(dirfd, "operstate", buf, sizeof buf) > 0) {
+    scrape_write(req, "node_network_up", dev_label, (float)(strcmp(buf, "down") == 0));
+
+    if (strcmp(buf, "up") == 0 &&
+        read_file_at(dirfd, "speed", buf, sizeof buf) > 0 &&
+        atof(buf) > 0)
       scrape_write(req, "node_network_speed_bytes", dev_label,
           atof(buf) * 125000.0); /* Mbit -> bytes */
+  }
 
   close(dirfd);
 }
