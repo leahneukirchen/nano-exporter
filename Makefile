@@ -34,6 +34,7 @@ COLLECTORS += textfile
 COLLECTORS += timex
 COLLECTORS += uname
 COLLECTORS += vmstat
+COLLECTORS += zfs
 
 # compile settings
 

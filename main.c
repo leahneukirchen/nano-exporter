@@ -49,6 +49,7 @@
   X(timex) \
   X(uname) \
   X(vmstat) \
+  X(zfs) \
 
 #endif
 
