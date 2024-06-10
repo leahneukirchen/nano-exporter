@@ -16,6 +16,7 @@
 
 #define _POSIX_C_SOURCE 200809L
 
+#include <errno.h>
 #include <string.h>
 #include <sys/statvfs.h>
 
@@ -144,8 +145,11 @@ static void filesystem_collect(scrape_req *req, void *ctx_ptr) {
 
     // report metrics from statfs
 
-    if (ctx->statvfs_func(*mount, &fs) != 0)
+    if (ctx->statvfs_func(*mount, &fs) != 0) {
+      if (errno != EACCES)
+        scrape_write(req, "node_filesystem_device_error", labels, errno);
       continue;
+    }
 
     double bs = fs.f_frsize;
     scrape_write(req, "node_filesystem_avail_bytes", labels, fs.f_bavail * bs);
