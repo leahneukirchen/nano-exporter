@@ -67,11 +67,13 @@ static const struct collector *collectors[] = {
 
 struct config {
   const char *port;
+  const char *host;
   bool print;
 };
 
 const struct config default_config = {
   .port = "9100",
+  .host = 0,
   .print = false,
 };
 
@@ -95,7 +97,7 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  scrape_server *server = scrape_listen(cfg.port);
+  scrape_server *server = scrape_listen(cfg.host, cfg.port);
   if (!server)
     return 1;
 
@@ -151,6 +153,11 @@ static bool initialize(int argc, char *argv[], struct config *cfg, struct collec
     // TODO --help
     if (strncmp(argv[arg], "--port=", 7) == 0) {
       cfg->port = &argv[arg][7];
+      goto next_arg;
+    }
+
+    if (strncmp(argv[arg], "--host=", 7) == 0) {
+      cfg->host = &argv[arg][7];
       goto next_arg;
     }
 

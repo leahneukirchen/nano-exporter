@@ -89,7 +89,7 @@ static int timeout_next_millis(scrape_req *reqs);
 
 // TCP socket server
 
-scrape_server *scrape_listen(const char *port) {
+scrape_server *scrape_listen(const char *host, const char *port) {
   scrape_server *srv = must_malloc(sizeof *srv);
 
   srv->nfds_listen = 0;
@@ -110,7 +110,7 @@ scrape_server *scrape_listen(const char *port) {
     };
     struct addrinfo *addrs;
 
-    ret = getaddrinfo(0, port, &hints, &addrs);
+    ret = getaddrinfo(host, port, &hints, &addrs);
     if (ret != 0) {
       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(ret));
       return false;

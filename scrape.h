@@ -34,8 +34,8 @@ struct collector {
   bool has_args;
 };
 
-/** Sets up a scrape server listening at the given port. */
-scrape_server *scrape_listen(const char *port);
+/** Sets up a scrape server listening at the given host:port. */
+scrape_server *scrape_listen(const char *host, const char *port);
 
 /** Enters a loop serving scrape requests of the provided collectors. */
 void scrape_serve(scrape_server *server, unsigned ncoll, const struct collector *coll[], void *coll_ctx[]);
