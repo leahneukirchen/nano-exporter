@@ -38,6 +38,8 @@ static void timex_collect(scrape_req *req, void *ctx) {
   scrape_write(req, "node_timex_tai_offset_seconds", 0, (double)buf.tai);
   scrape_write(req, "node_timex_tick_seconds", 0, buf.tick / 1e6);
 
+  scrape_write(req, "node_time_seconds", 0, buf.time.tv_sec + buf.time.tv_usec / 1e6);
+
 #if NTP_PPS
   scrape_write(req, "node_timex_pps_calibraton_total", 0, (double)buf.calcnt);
   scrape_write(req, "node_timex_pps_error_total", 0, (double)buf.errcnt);
