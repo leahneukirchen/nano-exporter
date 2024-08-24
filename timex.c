@@ -1,7 +1,9 @@
+#define _GNU_SOURCE
 #include <sys/timex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "scrape.h"
 #include "util.h"
@@ -21,6 +23,7 @@ const struct collector timex_collector = {
 static void timex_collect(scrape_req *req, void *ctx) {
   (void) ctx;
 
+  struct timespec ts;
   struct timex buf = { 0 };
 
   int r = adjtimex(&buf);
@@ -39,6 +42,15 @@ static void timex_collect(scrape_req *req, void *ctx) {
   scrape_write(req, "node_timex_tick_seconds", 0, buf.tick / 1e6);
 
   scrape_write(req, "node_time_seconds", 0, buf.time.tv_sec + buf.time.tv_usec / 1e6);
+
+  if (clock_gettime(CLOCK_TAI, &ts) == 0)
+    scrape_write(req, "node_clock_tai_seconds", 0, (double)ts.tv_sec + ts.tv_nsec / 1e9);
+
+  if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0)
+    scrape_write(req, "node_clock_monotonic_seconds", 0, (double)ts.tv_sec + ts.tv_nsec / 1e9);
+
+  if (clock_gettime(CLOCK_BOOTTIME, &ts) == 0)
+    scrape_write(req, "node_clock_boottime_seconds", 0, (double)ts.tv_sec + ts.tv_nsec / 1e9);
 
 #if NTP_PPS
   scrape_write(req, "node_timex_pps_calibraton_total", 0, (double)buf.calcnt);
