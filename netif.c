@@ -33,6 +33,9 @@ static void netif_collect_dir(scrape_req *req, char *dir) {
     LABEL_END,
   };
 
+  if (read_file_at(dirfd, "mtu", buf, sizeof buf) > 0)
+    scrape_write(req, "node_network_mtu_bytes", dev_label, atof(buf));
+
   if (read_file_at(dirfd, "carrier", buf, sizeof buf) > 0) {
     scrape_write(req, "node_network_carrier", dev_label, atof(buf));
 
