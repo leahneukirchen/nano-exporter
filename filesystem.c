@@ -123,7 +123,7 @@ static void filesystem_collect(scrape_req *req, void *ctx_ptr) {
       if (!slist_matches(ctx->include_device, *dev))
         continue;
     } else {
-      if (**dev != '/')
+      if (**dev != '/' && strcmp(*fstype, "zfs") != 0)
         continue;
       if (ctx->exclude_device && slist_matches(ctx->exclude_device, *dev))
         continue;
