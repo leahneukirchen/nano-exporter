@@ -25,23 +25,23 @@ static void pressure_collect(scrape_req *req, void *ctx) {
 
   if ((f = fopen("/proc/pressure/cpu", "r"))) {
     if (fscanf(f, "some %*[^t]total=%lld\n", &ms) == 1)
-      scrape_write(req, "node_cpu_waiting_seconds_total", 0, ms / 1e6);
+      scrape_write(req, "node_pressure_cpu_waiting_seconds_total", 0, ms / 1e6);
     fclose(f);
   }
 
   if ((f = fopen("/proc/pressure/memory", "r"))) {
     if (fscanf(f, "some %*[^t]total=%lld\n", &ms) == 1)
-      scrape_write(req, "memory_waiting_seconds_total", 0, ms / 1e6);
+      scrape_write(req, "node_pressure_memory_waiting_seconds_total", 0, ms / 1e6);
     if (fscanf(f, "full %*[^t]total=%lld\n", &ms) == 1)
-      scrape_write(req, "memory_stalled_seconds_total", 0, ms / 1e6);
+      scrape_write(req, "node_pressure_memory_stalled_seconds_total", 0, ms / 1e6);
     fclose(f);
   }
 
   if ((f = fopen("/proc/pressure/io", "r"))) {
     if (fscanf(f, "some %*[^t]total=%lld\n", &ms) == 1)
-      scrape_write(req, "io_waiting_seconds_total", 0, ms / 1e6);
+      scrape_write(req, "node_pressure_io_waiting_seconds_total", 0, ms / 1e6);
     if (fscanf(f, "full %*[^t]total=%lld\n", &ms) == 1)
-      scrape_write(req, "io_stalled_seconds_total", 0, ms / 1e6);
+      scrape_write(req, "node_pressure_io_stalled_seconds_total", 0, ms / 1e6);
     fclose(f);
   }
 }
